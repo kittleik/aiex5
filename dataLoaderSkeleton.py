@@ -41,42 +41,82 @@ class dataHolder:
                 dataset[qid].append(di)
             else:
                 dataset[qid]=[di]
+
         return dataset
+
 
 
 def runRanker(trainingset, testset):
     #TODO: Insert the code for training and testing your ranker here.
+
     #Dataholders for training and testset
     dhTraining = dataHolder(trainingset)
     dhTesting = dataHolder(testset)
 
+
+    print(dhTraining.dataset[10002][0].rating), "hello"
+
     #Creating an ANN instance - feel free to experiment with the learning rate (the third parameter).
     nn = Bp.NN(46,10,0.001)
+
+
+
+
+
 
     #TODO: The lists below should hold training patterns in this format: [(data1Features,data2Features), (data1Features,data3Features), ... , (dataNFeatures,dataMFeatures)]
     #TODO: The training set needs to have pairs ordered so the first item of the pair has a higher rating.
     trainingPatterns = [] #For holding all the training patterns we will feed the network
     testPatterns = [] #For holding all the test patterns we will feed the network
+
+    print dhTraining.dataset[10002]
+
     for qid in dhTraining.dataset.keys():
+
+        print "query id: ", qid
         #This iterates through every query ID in our training set
         dataInstance=dhTraining.dataset[qid] #All data instances (query, features, rating) for query qid
+
+        for data in dataInstance:
+            if data.rating >0:
+                for dataIn in dataInstance:
+                    if data.rating >dataIn.rating:
+                        t = (data.features, dataIn.features)
+                        trainingPatterns.append(t)
+
+
         #TODO: Store the training instances into the trainingPatterns array. Remember to store them as pairs, where the first item is rated higher than the second.
         #TODO: Hint: A good first step to get the pair ordering right, is to sort the instances based on their rating for this query. (sort by x.rating for each x in dataInstance)
+
+    print len(trainingPatterns)
+    print trainingPatterns[0]
+
 
     for qid in dhTesting.dataset.keys():
         #This iterates through every query ID in our test set
         dataInstance=dhTesting.dataset[qid]
+
+        for data in dataInstance:
+            if data.rating >0:
+                for dataIn in dataInstance:
+                    if data.rating >dataIn.rating:
+                        t = (data.features, dataIn.features)
+                        testPatterns.append(t)
+
         #TODO: Store the test instances into the testPatterns array, once again as pairs.
         #TODO: Hint: The testing will be easier for you if you also now order the pairs - it will make it easy to see if the ANN agrees with your ordering.
 
     #Check ANN performance before training
-    nn.countMisorderedPairs(testPatterns)
+    print len(testPatterns)
+    print nn.countMisorderedPairs(testPatterns)
+
     for i in range(25):
+        pass
         #Running 25 iterations, measuring testing performance after each round of training.
         #Training
-        nn.train(trainingPatterns,iterations=1)
+        #nn.train(trainingPatterns,iterations=1)
         #Check ANN performance after training.
-        nn.countMisorderedPairs(testPatterns)
+        #nn.countMisorderedPairs(testPatterns)
 
     #TODO: Store the data returned by countMisorderedPairs and plot it, showing how training and testing errors develop.
 
