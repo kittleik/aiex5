@@ -46,6 +46,7 @@ class NN: #Neural Network
         for j in range(self.numHidden):
             self.weightsOutput[j] = randomFloat(-0.5, 0.5)
 
+
         #Data for the backpropagation step in RankNets.
         #For storing the previous activation levels (output levels) of all neurons
         self.prevInputActivations = []
@@ -57,6 +58,8 @@ class NN: #Neural Network
         #For storing the current delta in the same layers
         self.deltaOutput = 0
         self.deltaHidden = [0 for i in range(self.numHidden)]
+
+        print self.prevInputActivations
 
     def propagate(self, inputs):
         if len(inputs) != self.numInputs-1:
@@ -86,6 +89,7 @@ class NN: #Neural Network
         return self.outputActivation
 
     def computeOutputDelta(self):
+<<<<<<< HEAD
         #TODO: Implement the delta function for the output layer (see exercise text)
         pab = 1/(1-math.exp(-1*(self.prevOutputActivation - self.outputActivation)))
         self.prevDeltaOutput = self.logFuncDerivative(self.prevOutputActivation)*(1-pab)
@@ -95,9 +99,20 @@ class NN: #Neural Network
         #TODO: Implement the delta function for the hidden layer (see exercise text)
         self.prevDeltaHidden = np.cross(self.logFuncDerivative(self.prevHiddenActivations),self.weightsOutput*(self.prevDeltaOutput-self.deltaOutput))
         self.deltaHidden = np.cross(self.logFuncDerivative(self.hiddenActivations),self.weightsOutput*(self.prevDeltaOutput-self.deltaOutput))
+=======
+
+        Pab = 1/(1-math.exp(-(self.prevOutputActivation - self.outputActivation)))
+
+        print Pab
+
+    def computeHiddenDelta(self):
+        #TODO: Implement the delta function for the hidden layer (see exercise text)
+        pass
+>>>>>>> 827cdd963543aabffa08796e13b16ae0709b7a88
 
     def updateWeights(self):
         #TODO: Update the weights of the network using the deltas (see exercise text)
+        pass
 
 
     def backpropagate(self):
@@ -118,19 +133,48 @@ class NN: #Neural Network
         #TODO: Train the network on all patterns for a number of iterations.
         #To measure performance each iteration: Run for 1 iteration, then count misordered pairs.
         #TODO: Training is done  like this (details in exercise text):
+
+
+
+
+
         #-Propagate A
         #-Propagate B
         #-Backpropagate
+        pass
 
     def countMisorderedPairs(self, patterns):
+
         #TODO: Let the network classify all pairs of patterns. The highest output determines the winner.
         #for each pair, do
         #Propagate A
         #Propagate B
+        numRight =0.0
+        numMisses =0.0
+        for pair in patterns:
+            A = self.propagate(pair[0])
+            B = self.propagate(pair[1])
+
+            if A > B:
+                numRight+=1
+
+            else:
+                numMisses += 1
+
+        print numMisses, "nummiss"
+        print numRight, "numRight"
+
+        errorRate = numMisses/(numRight+numMisses)
+
+        return errorRate
+
         #if A>B: A wins. If B>A: B wins
         #if rating(winner) > rating(loser): numRight++
         #else: numMisses++
         #end of for
         #TODO: Calculate the ratio of correct answers:
         #errorRate = numMisses/(numRight+numMisses)
+<<<<<<< HEAD
         pass
+=======
+>>>>>>> 827cdd963543aabffa08796e13b16ae0709b7a88
