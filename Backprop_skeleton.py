@@ -1,7 +1,6 @@
 import math
 import random
 import copy
-import numpy as np
 
 #The transfer function of neurons, g(x)
 def logFunc(x):
@@ -89,17 +88,6 @@ class NN: #Neural Network
         return self.outputActivation
 
     def computeOutputDelta(self):
-<<<<<<< HEAD
-        #TODO: Implement the delta function for the output layer (see exercise text)
-        pab = 1/(1-math.exp(-1*(self.prevOutputActivation - self.outputActivation)))
-        self.prevDeltaOutput = self.logFuncDerivative(self.prevOutputActivation)*(1-pab)
-        self.deltaOutput = self.logFuncDerivative(self.outputActivation)*(1-pab)
-
-    def computeHiddenDelta(self):
-        #TODO: Implement the delta function for the hidden layer (see exercise text)
-        self.prevDeltaHidden = np.cross(self.logFuncDerivative(self.prevHiddenActivations),self.weightsOutput*(self.prevDeltaOutput-self.deltaOutput))
-        self.deltaHidden = np.cross(self.logFuncDerivative(self.hiddenActivations),self.weightsOutput*(self.prevDeltaOutput-self.deltaOutput))
-=======
 
         Pab = 1/(1-math.exp(-(self.prevOutputActivation - self.outputActivation)))
 
@@ -108,12 +96,10 @@ class NN: #Neural Network
     def computeHiddenDelta(self):
         #TODO: Implement the delta function for the hidden layer (see exercise text)
         pass
->>>>>>> 827cdd963543aabffa08796e13b16ae0709b7a88
 
     def updateWeights(self):
         #TODO: Update the weights of the network using the deltas (see exercise text)
         pass
-
 
     def backpropagate(self):
         self.computeOutputDelta()
@@ -174,7 +160,3 @@ class NN: #Neural Network
         #end of for
         #TODO: Calculate the ratio of correct answers:
         #errorRate = numMisses/(numRight+numMisses)
-<<<<<<< HEAD
-        pass
-=======
->>>>>>> 827cdd963543aabffa08796e13b16ae0709b7a88
